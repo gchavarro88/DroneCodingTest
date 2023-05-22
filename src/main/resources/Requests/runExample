@@ -1,0 +1,2 @@
+curl --location --request GET 'http://localhost:8080/assign-location/run-example' \
+--data-raw ''

@@ -1,0 +1,28 @@
+curl --location --request POST 'http://localhost:8080/assign-location' \
+--header 'Content-Type: application/json' \
+--data-raw 'Drone1,200,Drone2,250,Drone3,100
+LocationA,200
+LocationB,150
+LocationC,50
+LocationD,150
+LocationE,100
+LocationF,200
+LocationG,50
+LocationH,80
+LocationI,70
+LocationJ,50
+LocationK,30
+LocationL,20
+LocationM,50
+LocationN,30
+LocationO,20
+LocationP,90
+LocationQ,70
+LocationR,50
+LocationS,30
+LocationT,50
+LocationU,10
+LocationV,230
+LocationX,150
+LocationY,20
+LocationZ,100'
