@@ -1,4 +1,4 @@
-package com.local.DroneCodingTest.models;
+package com.local.DroneCodingTest.entities;
 
 public class Location {
     private String name;

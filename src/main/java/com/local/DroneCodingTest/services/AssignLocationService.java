@@ -1,8 +1,8 @@
 package com.local.DroneCodingTest.services;
 
-import com.local.DroneCodingTest.models.DeliverySchedule;
-import com.local.DroneCodingTest.models.Drone;
-import com.local.DroneCodingTest.models.Location;
+import com.local.DroneCodingTest.entities.DeliverySchedule;
+import com.local.DroneCodingTest.entities.Drone;
+import com.local.DroneCodingTest.entities.Location;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
