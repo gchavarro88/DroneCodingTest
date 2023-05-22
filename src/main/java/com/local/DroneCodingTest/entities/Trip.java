@@ -2,11 +2,11 @@ package com.local.DroneCodingTest.entities;
 
 import java.util.List;
 
-public class DeliverySchedule {
+public class Trip {
     private Drone drone;
     private List<Location> locations;
 
-    public DeliverySchedule(Drone drone, List<Location> locations) {
+    public Trip(Drone drone, List<Location> locations) {
         this.drone = drone;
         this.locations = locations;
     }

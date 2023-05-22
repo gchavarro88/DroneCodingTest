@@ -1,6 +1,6 @@
 package com.local.DroneCodingTest.services;
 
-import com.local.DroneCodingTest.entities.DeliverySchedule;
+import com.local.DroneCodingTest.entities.Trip;
 import com.local.DroneCodingTest.entities.Drone;
 import com.local.DroneCodingTest.entities.Location;
 import org.junit.jupiter.api.Test;
@@ -132,21 +132,21 @@ public class AssignLocationServiceTest {
                 new Location("Location D", 150),
                 new Location("Location E", 100));
 
-        DeliverySchedule deliveryScheduleExpected = new DeliverySchedule(drone, List.of(
+        Trip tripExpected = new Trip(drone, List.of(
                 new Location("Location A", 30),
                 new Location("Location B", 60),
                 new Location("Location C", 50)
         ));
 
-        DeliverySchedule result = service.validateCapacityByDrone(drone, locations);
+        Trip result = service.validateCapacityByDrone(drone, locations);
         assertNotNull(result);
         assertNotNull(result.getDrone());
         assertNotNull(result.getLocations());
         assertEquals(3, result.getLocations().size());
         assertTrue(result.getLocations().stream().mapToInt(Location::getWeight).sum() <= drone.getCapacity());
 
-        for (int i = 0; i < deliveryScheduleExpected.getLocations().size(); i++) {
-            assertEquals(deliveryScheduleExpected.getLocations().get(i).getName(),
+        for (int i = 0; i < tripExpected.getLocations().size(); i++) {
+            assertEquals(tripExpected.getLocations().get(i).getName(),
                     result.getLocations().get(i).getName());
         }
     }
@@ -176,7 +176,7 @@ public class AssignLocationServiceTest {
                 new Location("Location O", 20),
                 new Location("Location P", 90));
 
-        List<DeliverySchedule> result = service.assignDeliveries(drones, locations);
+        List<Trip> result = service.assignDeliveries(drones, locations);
         assertNotNull(result);
         assertEquals(6, result.size());
         assertEquals(3L, result.stream().filter(d -> d.getDrone().getName().equals("Drone A")).count());
