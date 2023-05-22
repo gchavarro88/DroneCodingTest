@@ -53,7 +53,7 @@ public class AssignLocationService {
         int remainingCapacity = drone.getCapacity();
         DeliverySchedule deliverySchedule = new DeliverySchedule(drone, new ArrayList<>());
         for (Location location : locations) {
-            if (!location.isDelivered() && remainingCapacity >= location.getWeight()) {
+            if (remainingCapacity >= location.getWeight()) {
                 deliverySchedule.getLocations().add(location);
                 remainingCapacity -= location.getWeight();
             } else {
