@@ -73,7 +73,7 @@ public class AssignLocationServiceTest {
                 LocationE,100
                 """;
 
-        StringBuilder result = service.assignLocation(input);
+        StringBuilder result = service.assignLocationsByInput(input);
         assertNotNull(result);
         assertEquals(response, result.toString());
     }
@@ -138,7 +138,7 @@ public class AssignLocationServiceTest {
                 new Location("Location C", 50)
         ));
 
-        DeliverySchedule result = service.validateCapacity(drone, locations);
+        DeliverySchedule result = service.validateCapacityByDrone(drone, locations);
         assertNotNull(result);
         assertNotNull(result.getDrone());
         assertNotNull(result.getLocations());
@@ -211,7 +211,7 @@ public class AssignLocationServiceTest {
                 =====> Deliveries for Drone3 Capacity: 100 ======>
                 """;
 
-        StringBuilder result = service.doAssign(drones, locations);
+        StringBuilder result = service.generateSchedules(drones, locations);
         assertNotNull(result);
         assertEquals(response, result.toString());
     }
@@ -229,7 +229,7 @@ public class AssignLocationServiceTest {
 
         String response = "";
 
-        StringBuilder result = service.doAssign(drones, locations);
+        StringBuilder result = service.generateSchedules(drones, locations);
         assertNotNull(result);
         assertEquals(response, result.toString());
     }
@@ -249,7 +249,7 @@ public class AssignLocationServiceTest {
                 =====> Deliveries for Drone3 Capacity: 100 ======>
                 """;
 
-        StringBuilder result = service.doAssign(drones, locations);
+        StringBuilder result = service.generateSchedules(drones, locations);
         assertNotNull(result);
         assertEquals(response, result.toString());
     }

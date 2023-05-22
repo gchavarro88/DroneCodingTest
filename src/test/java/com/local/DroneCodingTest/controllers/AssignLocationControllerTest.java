@@ -46,13 +46,13 @@ public class AssignLocationControllerTest {
     @Test
     public void assignLocationsHappyPath() {
 
-        Mockito.when(service.assignLocation(Mockito.eq("FAKE_PAYLOAD")))
+        Mockito.when(service.assignLocationsByInput(Mockito.eq("FAKE_PAYLOAD")))
                 .thenReturn(new StringBuilder("RESPONSE"));
         ResponseEntity<String> result = controller.assignLocation("FAKE_PAYLOAD");
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals("RESPONSE", result.getBody());
-        Mockito.verify(service, Mockito.atLeastOnce()).assignLocation( Mockito.any());
+        Mockito.verify(service, Mockito.atLeastOnce()).assignLocationsByInput( Mockito.any());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class AssignLocationControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
         assertEquals("Empty Input, data for drones and locations don't should be empty", result.getBody());
-        Mockito.verify(service, Mockito.never()).assignLocation( Mockito.any());
+        Mockito.verify(service, Mockito.never()).assignLocationsByInput( Mockito.any());
     }
 
     @Test
@@ -72,6 +72,6 @@ public class AssignLocationControllerTest {
             controller.assignLocation("FAKE_PAYLOAD");
         });
 
-        Mockito.verify(service, Mockito.never()).doAssign(Mockito.any(), Mockito.any());
+        Mockito.verify(service, Mockito.never()).generateSchedules(Mockito.any(), Mockito.any());
     }
 }

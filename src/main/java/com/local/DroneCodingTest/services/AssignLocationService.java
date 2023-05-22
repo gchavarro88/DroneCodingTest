@@ -14,7 +14,42 @@ import java.util.List;
 public class AssignLocationService {
 
 
-    public DeliverySchedule validateCapacity(Drone drone, List<Location> locations) {
+    /**
+     * Responsible to get the drones from the input
+     * @param input
+     * @return
+     */
+    public List<Drone> getDrones(String input) {
+        String[] data = input.split(",");
+        List<Drone> drones = new ArrayList<>();
+        for (int i = 0; i < data.length; i = i + 2) {
+            drones.add(new Drone(data[i], Integer.parseInt(data[i + 1])));
+        }
+        return drones;
+    }
+
+    /**
+     * Responsible to get the locations from the input
+     * @param input
+     * @return
+     */
+    public List<Location> getLocations(String[] input) {
+        List<Location> locations = new ArrayList<>();
+
+        for (String s : input) {
+            String[] data = s.split(",");
+            locations.add(new Location(data[0], Integer.parseInt(data[1])));
+        }
+        return locations;
+    }
+
+    /**
+     * Responsible to validate capacity by drone
+     * @param drone
+     * @param locations
+     * @return
+     */
+    public DeliverySchedule validateCapacityByDrone(Drone drone, List<Location> locations) {
         int remainingCapacity = drone.getCapacity();
         DeliverySchedule deliverySchedule = new DeliverySchedule(drone, new ArrayList<>());
         for (Location location : locations) {
@@ -29,6 +64,12 @@ public class AssignLocationService {
         return deliverySchedule;
     }
 
+    /**
+     * Responsible to assign the locations by drone
+     * @param drones
+     * @param locations
+     * @return
+     */
     public List<DeliverySchedule> assignDeliveries(List<Drone> drones, List<Location> locations) {
         int locationsIndex = 0;
         List<DeliverySchedule> schedule = new ArrayList<>();
@@ -37,7 +78,7 @@ public class AssignLocationService {
             while (locationsIndex < (locations.size())) {
                 List<DeliverySchedule> deliveries = new ArrayList<>();
                 for (Drone drone : drones) {
-                    deliveries.add(validateCapacity(drone, locations.subList(locationsIndex, locations.size())));
+                    deliveries.add(validateCapacityByDrone(drone, locations.subList(locationsIndex, locations.size())));
                 }
 
                 DeliverySchedule bestDelivery = deliveries.stream()
@@ -50,6 +91,51 @@ public class AssignLocationService {
         return schedule;
     }
 
+    /**
+     * Responsible to receive and order with the input data and prepare date to call the schedules generator
+     * @param input
+     * @return
+     */
+    public StringBuilder assignLocationsByInput(String input) {
+        String[] data = input.split(System.getProperty("line.separator"));
+        List<Drone> drones = getDrones(data[0]);
+        List<Location> locations = getLocations(Arrays.copyOfRange(data, 1, data.length, String[].class));
+        return generateSchedules(drones, locations);
+    }
+
+    /**
+     * Responsible to generate the delivery schedules using the input lists
+     * @param drones
+     * @param locations
+     * @return
+     */
+    public StringBuilder generateSchedules(List<Drone> drones, List<Location> locations) {
+        StringBuilder result = new StringBuilder();
+        List<DeliverySchedule> deliverySchedule = assignDeliveries(drones, locations);
+
+        for (Drone drone : drones) {
+            int trip = 1;
+            result.append("=====> Deliveries for ").append(drone.getName()).append(" Capacity: ")
+                    .append(drone.getCapacity()).append(" ======>")
+                    .append(System.getProperty("line.separator"));
+            List<DeliverySchedule> deliveriesByDrone = deliverySchedule.stream()
+                    .filter(d -> d.getDrone().equals(drone)).toList();
+            for (DeliverySchedule delivery : deliveriesByDrone) {
+                result.append("Trip #").append(trip).append(System.getProperty("line.separator"));
+                delivery.getLocations().forEach(p -> result.append(" ").append(p.getName())
+                        .append(" ").append(p.getWeight()).append(" -"));
+                result.append("  Total: ").append(delivery.getLocations().stream().mapToInt(Location::getWeight).sum());
+                result.append(System.getProperty("line.separator"));
+                trip++;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Demo created using the example data
+     * @return
+     */
     public StringBuilder getDemo() {
 
         List<Drone> drones = List.of(
@@ -75,55 +161,6 @@ public class AssignLocationService {
                 new Location("Location O", 20),
                 new Location("Location P", 90));
 
-        return doAssign(drones, locations);
-    }
-
-    public StringBuilder assignLocation(String input) {
-        String[] data = input.split(System.getProperty("line.separator"));
-        List<Drone> drones = getDrones(data[0]);
-        List<Location> locations = getLocations(Arrays.copyOfRange(data, 1, data.length, String[].class));
-        return doAssign(drones, locations);
-    }
-
-    public List<Drone> getDrones(String input) {
-        String[] data = input.split(",");
-        List<Drone> drones = new ArrayList<>();
-        for (int i = 0; i < data.length; i = i + 2) {
-            drones.add(new Drone(data[i], Integer.parseInt(data[i + 1])));
-        }
-        return drones;
-    }
-
-    public List<Location> getLocations(String[] input) {
-        List<Location> locations = new ArrayList<>();
-
-        for (String s : input) {
-            String[] data = s.split(",");
-            locations.add(new Location(data[0], Integer.parseInt(data[1])));
-        }
-        return locations;
-    }
-
-    public StringBuilder doAssign(List<Drone> drones, List<Location> locations) {
-        StringBuilder result = new StringBuilder();
-        List<DeliverySchedule> deliverySchedule = assignDeliveries(drones, locations);
-
-        for (Drone drone : drones) {
-            int trip = 1;
-            result.append("=====> Deliveries for ").append(drone.getName()).append(" Capacity: ")
-                    .append(drone.getCapacity()).append(" ======>")
-                    .append(System.getProperty("line.separator"));
-            List<DeliverySchedule> deliveriesByDrone = deliverySchedule.stream()
-                    .filter(d -> d.getDrone().equals(drone)).toList();
-            for (DeliverySchedule delivery : deliveriesByDrone) {
-                result.append("Trip #").append(trip).append(System.getProperty("line.separator"));
-                delivery.getLocations().forEach(p -> result.append(" ").append(p.getName())
-                        .append(" ").append(p.getWeight()).append(" -"));
-                result.append("  Total: ").append(delivery.getLocations().stream().mapToInt(Location::getWeight).sum());
-                result.append(System.getProperty("line.separator"));
-                trip++;
-            }
-        }
-        return result;
+        return generateSchedules(drones, locations);
     }
 }

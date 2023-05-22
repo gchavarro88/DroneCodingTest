@@ -27,7 +27,7 @@ public class AssignLocationController {
         if (payload.isEmpty()) {
             return ResponseEntity.status(400).body("Empty Input, data for drones and locations don't should be empty");
         } else {
-            StringBuilder append = service.assignLocation(payload);
+            StringBuilder append = service.assignLocationsByInput(payload);
             return ResponseEntity.ok(append.toString());
         }
     }
