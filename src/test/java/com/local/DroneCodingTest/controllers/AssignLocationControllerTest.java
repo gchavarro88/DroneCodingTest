@@ -37,7 +37,7 @@ public class AssignLocationControllerTest {
 
     @Test
     public void runExampleTest() {
-        Mockito.when(service.getDemo()).thenReturn(new StringBuilder("RESPONSE"));
+        Mockito.when(service.getDemo()).thenReturn("RESPONSE");
         ResponseEntity<String> result = controller.runExample();
         assertEquals(HttpStatus.OK, result.getStatusCode());
         Mockito.verify(service, Mockito.times(1)).getDemo();
@@ -47,7 +47,7 @@ public class AssignLocationControllerTest {
     public void assignLocationsHappyPath() {
 
         Mockito.when(service.assignLocationsByInput(Mockito.eq("FAKE_PAYLOAD")))
-                .thenReturn(new StringBuilder("RESPONSE"));
+                .thenReturn("RESPONSE");
         ResponseEntity<String> result = controller.assignLocation("FAKE_PAYLOAD");
 
         assertEquals(HttpStatus.OK, result.getStatusCode());

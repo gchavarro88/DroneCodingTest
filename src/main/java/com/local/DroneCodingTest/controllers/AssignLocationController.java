@@ -18,8 +18,8 @@ public class AssignLocationController {
 
     @GetMapping("/run-example")
     public ResponseEntity<String> runExample () {
-        StringBuilder append = service.getDemo();
-        return ResponseEntity.ok(append.toString());
+        String append = service.getDemo();
+        return ResponseEntity.ok(append);
     }
 
     @PostMapping()
@@ -27,8 +27,8 @@ public class AssignLocationController {
         if (payload.isEmpty()) {
             return ResponseEntity.status(400).body("Empty Input, data for drones and locations don't should be empty");
         } else {
-            StringBuilder append = service.assignLocationsByInput(payload);
-            return ResponseEntity.ok(append.toString());
+            String append = service.assignLocationsByInput(payload);
+            return ResponseEntity.ok(append);
         }
     }
 }

@@ -97,7 +97,7 @@ public class AssignLocationService {
      * @param locations
      * @return
      */
-    public StringBuilder generateSchedules(List<Drone> drones, List<Location> locations) {
+    public String generateSchedules(List<Drone> drones, List<Location> locations) {
         StringBuilder result = new StringBuilder();
         List<Trip> trips = assignDeliveries(drones, locations);
 
@@ -117,14 +117,14 @@ public class AssignLocationService {
                 trip++;
             }
         }
-        return result;
+        return result.toString();
     }
 
     /**
      * Demo created using the example data
      * @return
      */
-    public StringBuilder getDemo() {
+    public String getDemo() {
 
         List<Drone> drones = List.of(
                 new Drone("Drone A", 200),
@@ -157,7 +157,7 @@ public class AssignLocationService {
      * @param input
      * @return
      */
-    public StringBuilder assignLocationsByInput(String input) {
+    public String assignLocationsByInput(String input) {
         String[] data = input.split(System.getProperty("line.separator"));
         List<Drone> drones = getDrones(data[0]);
         List<Location> locations = getLocations(Arrays.copyOfRange(data, 1, data.length, String[].class));
